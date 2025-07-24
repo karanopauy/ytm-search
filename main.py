@@ -1,12 +1,13 @@
-import yt_dlp
-from flask_cors import CORS
-from flask import Flask, request, jsonify
 import os
 proxy_url = '160.251.142.232:80'
 os.environ["http_proxy"] = proxy_url
 os.environ["https_proxy"] = proxy_url
 os.environ["HTTP_PROXY"] = proxy_url  # uppercase variants sometimes needed
 os.environ["HTTPS_PROXY"] = proxy_url
+
+import yt_dlp
+from flask_cors import CORS
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 CORS(app)
