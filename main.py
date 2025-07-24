@@ -188,7 +188,10 @@ def search_result(query):
     }
     url = "https://music.youtube.com/youtubei/v1/search?prettyPrint=false"
     try:
-        response = rq.post(url, headers=headers, json=payload, cookies=cookie).json()
+        try:
+            response = rq.post(url, headers=headers, json=payload, cookies=cookie).json()
+        except:
+            return jsonify({"Error" : "No Internet Access", "Code" : 202}) , 404
         response = response["contents"]["tabbedSearchResultsRenderer"]["tabs"][0][
             "tabRenderer"
         ]["content"]["sectionListRenderer"]["contents"][1]["musicCardShelfRenderer"]
