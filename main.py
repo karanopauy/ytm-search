@@ -36,7 +36,7 @@ def search_result(query):
         "LOGIN_INFO": "AFmmF2swRQIhANMiljR-f47-jso4dG4NfXpADTv_vOo7zydiKdIlvFtJAiAJ6F3yzpsg5WR5jqXggZEXxz4kANEg4Vl7OQM_bG4daA:QUQ3MjNmeTIyNWt4QUdQWHZTM2JWQ1dnREZKUUtqWFRSVVhYNklwT3hETGNHQTlCRm9zWFdjbGNWRUZIdlM1YnJaZEhhR2lOQk5VN0Q5MHNpbW9ndmpXRVM2YkYzWU8xSGxvSmRzQUM0OHFUa2Vaek5vanZxXzNhZG9tVEhrcnlWUlQzQXFKUDk1U3JSWTdpaEc0X2JJSE1EaFRPSzBWQ3RB",
         "NID": "525=WUnsJ27owu7RtD19Fxn-62YMvguyQPrg2FZk5k6vtjYbSF_SE9YReFlzVaqVZYC4-LwevJeVteI_f9OkgPEGsv0Mp4AXQyMTLf2eNiL3U-qqfupWsvS-pfCf_Co6PMTEBleBsiF48nuct72JaTu16bVFt_Y8K079OGTgJgixgo_gEiuO6Pj_1v2hIsqAs_cbVDFdXPj2Sg2S2cFlktDWS869ELbhnIuendDePu5Q",
         "PREF": "repeat=NONE&f6=40000400&tz=Europe.Bucharest&f7=100&f5=20000&f4=4000000&autoplay=true",
-        "s_gl": "TR",
+        "s_gl": "NL",
         "SAPISID": "6B4klqdk-uAkBeW5/AbjywAOSVB9zr4eY6",
         "SID": "g.a000zQiPvnZ_AkfsufuNR0DOSpdeSkdvQq8E4sEQK5OAp0KASd4ijOIk-_vc2FX_ysBVHpnKdgACgYKAZwSARMSFQHGX2Miiu5guCT729BH7sJRAH-ENBoVAUF8yKocwMN5amDiM_TFN-Y3R-4Q0076",
         "SIDCC": "AKEyXzWybQxpsVJ7C4twRnbNCvb-bQlB7T50Scj6kBBcqB9XKK_oIzalSHFRvpCFKLLzTUJgIHM",
@@ -56,8 +56,8 @@ def search_result(query):
         "context": {
             "client": {
                 "hl": "en-GB",
-                "gl": "TR",
-                "remoteHost": "93.182.104.183",
+                "gl": "NL",
+                "remoteHost": "",
                 "deviceMake": "",
                 "deviceModel": "",
                 "visitorData": "Cgs4X3hNQWZ4S3NjbyjS9YjEBjInCgJDWRIhEh0SGwsMDg8QERITFBUWFxgZGhscHR4fICEiIyQlJiAj",
@@ -78,7 +78,7 @@ def search_result(query):
                 },
                 "screenDensityFloat": 1.25,
                 "userInterfaceTheme": "USER_INTERFACE_THEME_DARK",
-                "timeZone": "Europe/Bucharest",  # Note: This is a fixed string. You could make this dynamic too if needed, based on host system's timezone.
+                "timeZone": "Europe/Amsterdam",  # Note: This is a fixed string. You could make this dynamic too if needed, based on host system's timezone.
                 "browserName": "Firefox",
                 "browserVersion": "140.0",
                 "acceptHeader": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
