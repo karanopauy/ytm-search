@@ -1,5 +1,5 @@
 import os
-proxy_url = '160.251.142.232:80'
+proxy_url = '123.141.181.32:5031'
 os.environ["http_proxy"] = proxy_url
 os.environ["https_proxy"] = proxy_url
 os.environ["HTTP_PROXY"] = proxy_url  # uppercase variants sometimes needed
