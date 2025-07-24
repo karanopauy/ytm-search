@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request
 import requests as rq
 import json as js
 from bs4 import BeautifulSoup as bs
-import lxml
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -85,7 +84,7 @@ def getTopSongs():
         print(f"ERROR: Failed to fetch Billboard data. Network probably died or Billboard hates us: {e}")
         return []
 
-    soups = bs(response.text, 'lxml')
+    soups = bs(response.text, 'html.parser')
 
     chart_list_container = soups.find('div', class_='chart-results-list')
     if not chart_list_container:
