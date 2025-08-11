@@ -35,9 +35,9 @@ def search():
     if not audio_formats:
         return jsonify({'error': 'No audio stream found'}), 404
 
-    # Sort by abr (audio bitrate) descending to get best quality
-    audio_formats.sort(key=lambda x: x.get('abr', 0), reverse=True)
+    audio_formats.sort(key=lambda x: x.get('abr') or 0, reverse=True)
     best_audio = audio_formats[0]
+
 
     stream_url = best_audio['url']
     http_headers = best_audio.get('http_headers', {})
