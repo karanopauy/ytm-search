@@ -8,12 +8,11 @@ app = Flask(__name__)
 ydl_opts = {
     'quiet': True,
     'skip_download': True,
-    'format': 'bestaudio/best',
+    'format': 'bestaudio',
     'noplaylist': True,
     'nocheckcertificate': True,
 }
-#n
-# Simple in-memory cache: id -> (url, headers)
+
 stream_cache = {}
 
 @app.route('/search')
@@ -31,19 +30,18 @@ def search():
     artist = info.get('artist') or info.get('uploader') or 'Unknown'
     title = info.get('title') or 'Unknown'
 
-    # Pick best audio format URL and headers
-    format_info = None
-    for f in reversed(info.get('formats', [])):
-        if f.get('acodec') != 'none' and f.get('url'):
-            format_info = f
-            break
-    if not format_info:
+    # Pick best audio-only format
+    audio_formats = [f for f in info.get('formats', []) if f.get('vcodec') == 'none' and f.get('acodec') != 'none' and f.get('url')]
+    if not audio_formats:
         return jsonify({'error': 'No audio stream found'}), 404
 
-    stream_url = format_info['url']
-    http_headers = format_info.get('http_headers', {})
+    # Sort by abr (audio bitrate) descending to get best quality
+    audio_formats.sort(key=lambda x: x.get('abr', 0), reverse=True)
+    best_audio = audio_formats[0]
 
-    # Store url + headers in cache with a unique ID
+    stream_url = best_audio['url']
+    http_headers = best_audio.get('http_headers', {})
+
     stream_id = str(uuid.uuid4())
     stream_cache[stream_id] = (stream_url, http_headers)
 
@@ -60,7 +58,6 @@ def stream(stream_id):
 
     url, headers = stream_cache[stream_id]
 
-    # Minimal default headers fallback
     req_headers = {
         'User-Agent': headers.get('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'),
         'Referer': headers.get('Referer', 'https://www.youtube.com/'),
@@ -76,6 +73,7 @@ def stream(stream_id):
         r.iter_content(chunk_size=1024),
         content_type=r.headers.get('content-type'),
         status=r.status_code,
+        headers={'Content-Disposition': 'inline'},  # force playback in browser
         direct_passthrough=True,
     )
 
