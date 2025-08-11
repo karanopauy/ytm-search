@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, Response, abort
 from yt_dlp import YoutubeDL
 import requests
+import uuid
 
 app = Flask(__name__)
-#n
+
 ydl_opts = {
     'quiet': True,
     'skip_download': True,
@@ -11,6 +12,9 @@ ydl_opts = {
     'noplaylist': True,
     'nocheckcertificate': True,
 }
+
+# Simple in-memory cache: id -> (url, headers)
+stream_cache = {}
 
 @app.route('/search')
 def search():
@@ -39,28 +43,32 @@ def search():
     stream_url = format_info['url']
     http_headers = format_info.get('http_headers', {})
 
+    # Store url + headers in cache with a unique ID
+    stream_id = str(uuid.uuid4())
+    stream_cache[stream_id] = (stream_url, http_headers)
+
     return jsonify({
         'artist': artist,
         'title': title,
-        'stream_proxy_url': f"/stream?url={stream_url}"
+        'stream_proxy_url': f"/stream/{stream_id}"
     })
 
-@app.route('/stream')
-def stream():
-    url = request.args.get('url')
-    if not url:
-        return abort(400, "Missing url param")
+@app.route('/stream/<stream_id>')
+def stream(stream_id):
+    if stream_id not in stream_cache:
+        return abort(404, "Stream ID not found")
 
-    # Ideally, you'd want to whitelist URLs or sign these URLs to avoid abuse
+    url, headers = stream_cache[stream_id]
 
-    # For demo, proxy stream with minimal headers
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+    # Minimal default headers fallback
+    req_headers = {
+        'User-Agent': headers.get('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'),
+        'Referer': headers.get('Referer', 'https://www.youtube.com/'),
+        'Cookie': headers.get('Cookie', ''),
         'Accept': '*/*',
-        'Referer': 'https://www.youtube.com/',
     }
 
-    r = requests.get(url, headers=headers, stream=True)
+    r = requests.get(url, headers=req_headers, stream=True)
     if r.status_code != 200:
         return abort(r.status_code, "Failed to fetch stream")
 
